@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.barjo</groupId>
+    <artifactId>h-bound</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>js</packaging>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.nanoko</groupId>
+            <artifactId>h-ubu</artifactId>
+            <version>1.0.0</version>
+            <type>js</type>
+        </dependency>
+        <dependency>
+            <groupId>org.nanoko.syndication</groupId>
+            <artifactId>syndication-service-jfeed</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>js</type>
+        </dependency>
+        <dependency>
+            <groupId>com.linkedin</groupId>
+            <artifactId>dust-full</artifactId>
+            <version>1.2.0</version>
+            <type>js</type>
+        </dependency>
+        <dependency>
+            <groupId>com.linkedin</groupId>
+            <artifactId>dust-helpers</artifactId>
+            <version>1.1.1</version>
+            <type>js</type>
+        </dependency>
+        <dependency>
+            <groupId>com.jquery</groupId>
+            <artifactId>jquery</artifactId>
+            <version>1.9.1</version>
+            <classifier>min</classifier>
+            <type>js</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.nanoko.coffee-mill</groupId>
+                <artifactId>coffee-mill-maven-plugin</artifactId>
+                <version>1.0.1-SNAPSHOT</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <!-- here goes the plugin configuration -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

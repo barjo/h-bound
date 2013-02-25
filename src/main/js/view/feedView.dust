@@ -1,0 +1,11 @@
+{#entries}
+{@idx}
+    {@lt key="{.}" value=count}
+
+        <blockquote>
+            <p>{title|s}</p>
+            <small><a href="{url}">{date}</a></small>
+        </blockquote>
+    {/lt}
+{/idx}
+{/entries}

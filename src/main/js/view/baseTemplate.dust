@@ -1,0 +1,39 @@
+<a href="https://github.com/barjo/h-bound">
+    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub">
+</a>
+
+<!-- Wrap zone, -->
+<div id="wrap">
+
+    <div class="container-narrow">
+        <div class="masthead">
+            <ul class="nav nav-pills pull-right">
+                {#location}
+                    <li {@eq key=current value="#home"} class="active" {/eq}><a href="#home">Home</a></li>
+                    <li {@eq key=current value="#info"} class="active" {/eq}><a href="#info">Info</a></li>
+                {/location}
+
+            </ul>
+            <h3 class="muted">{pagename}</h3>
+        </div>
+
+
+        <hr>
+        <div id="bodyContent">
+            {+bodyContent/} <!-- content -->
+        </div>
+        <hr>
+    </div>
+    <!-- /container -->
+    <div id="push"></div>
+</div>
+<!-- close Wrapper -->
+
+
+<div id="footer">
+    <div class="container">
+        {#footer}
+        <p class="muted credit">{name} - {year}</p>
+        {/footer}
+    </div>
+</div>

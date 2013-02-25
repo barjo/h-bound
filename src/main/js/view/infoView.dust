@@ -1,0 +1,19 @@
+{! First, insert the base template as a partial !}
+{>"baseTemplate"/}
+
+{<bodyContent}
+<div class="row-fluid marketing">
+
+    <h4>H-Bound components</h4>
+    <dl>
+    {#components}
+        <dt>{name}</dt>
+        <dd>{description}</dd>
+        <br>
+    {/components}
+    </dl>
+</div>
+
+
+{/bodyContent}
+
