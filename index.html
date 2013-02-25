@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"> <!-- éèàçö -->
+    <meta name="keywords" content="H-Ubu,H-Bound,dustjs,JavaScript,feed,demo">
+    <meta name="author" content="Barjo">
+    <title>H-Bound</title>
+
+    <!-- libs -->
+    <script type="text/javascript" src="libs/jquery.js"></script>
+    <script type="text/javascript" src="libs/jfeed.js"></script>
+    <script type="text/javascript" src="libs/dust-full.js"></script>
+    <script type="text/javascript" src="libs/dust-helpers.js"></script>
+    <script type="text/javascript" src="libs/h-ubu.js"></script>
+
+
+    <!-- Components -->
+    <script type="text/javascript" src="comp/presenter.js"></script>
+    <script type="text/javascript" src="comp/hashController.js"></script>
+    <script type="text/javascript" src="comp/feedController.js"></script>
+    <script type="text/javascript" src="comp/syndication-service-jfeed.js"></script>
+
+
+    <!-- Views-->
+    <script type="text/javascript" src="view/baseTemplate.js"></script>
+    <script type="text/javascript" src="view/homeView.js"></script>
+    <script type="text/javascript" src="view/feedView.js"></script>
+    <script type="text/javascript" src="view/infoView.js"></script>
+
+    <!-- Models-->
+    <script type="text/javascript" src="model/model.js"></script>
+
+
+
+
+
+    <script type="text/javascript">
+        <!-- (3) -->
+        $(document).ready(function(){
+            // Component registrations
+            <!-- (4) -->
+            hub
+                    .registerComponent(new HashLocationController(), {
+                        component_name: 'main-mediator',
+                        context : globalcontext.global
+                    })
+
+                    //#home
+                    .registerComponent(new GenericDustPresenter(), {
+                        component_name: 'home-presenter',
+                        dustview : "homeView",
+                        hash : "#home",
+                        selector : function(){return document.body}
+                    })
+                    //#info
+                    .registerComponent(new GenericDustPresenter(), {
+                        component_name: 'info-presenter',
+                        dustview : "infoView",
+                        hash : "#info",
+                        selector : function(){return document.body}
+                    })
+
+
+                    //Twitter feed
+                    .registerComponent(new GenericDustPresenter(), {
+                        component_name: 'twitter-presenter',
+                        dustview : "feedView",
+                        selector : function(){return document.getElementById("view_twitter")}
+                    })
+                    .registerComponent(new SyndicationService.JFeed.FeedReaderImpl(), {
+                        component_name: 'twitter-feed',
+                        'feed.url' : 'https://api.twitter.com/1/statuses/user_timeline.rss?screen_name=notbarjo',
+                        'feed.useGoogleFeedAPI' : true,
+                        'feed.period' : 60000
+                    })
+                    .registerComponent(new FeedController(), {
+                        component_name: 'twitter-controller',
+                        count: 3, //show 3 tweets
+                        feed: "twitter-feed",
+                        presenter: "twitter-presenter",
+                        mapper: function(entry){
+                            return {
+                                author: entry.getAuthor(),
+                                content :linkify_tweet(entry.getContent().substring("notbarjo:".length)),
+                                title :linkify_tweet(entry.getTitle().substring("notbarjo:".length)),
+                                url : entry.getUrl(),
+                                date : new Date(entry.getPublicationDate()).toDateString()
+                            }},
+                        context : globalcontext.global,
+                        contextKey : 'tweets'
+                    })
+
+                    //GitHub feed
+                    .registerComponent(new SyndicationService.JFeed.FeedReaderImpl(), {
+                        component_name: 'github-feed',
+                        'feed.url' : 'https://github.com/barjo/h-bound/commits/master.atom',
+                        'feed.useGoogleFeedAPI' : true,
+                        'feed.period' : 60000
+                    }).registerComponent(new GenericDustPresenter(), {
+                        component_name: 'github-presenter',
+                        dustview : "feedView",
+                        selector : function(){return document.getElementById("view_github")}
+                    }).registerComponent(new FeedController(), {
+                        component_name: 'github-controller',
+                        count: 3,
+                        feed: "github-feed",
+                        presenter: "github-presenter",
+                        context : globalcontext.global,
+                        contextKey : 'github'
+                    })
+            .start();
+        });
+
+
+        //utils
+        function linkify_tweet(data) {
+            //URLs starting with http://, https://
+            //tweeter pseudo @..
+            //tweeter hastag #..
+            return data
+                        .replace(/(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim,
+                                '<a href="$1" target="_blank">$1</a>')
+                        .replace(/(\B(@)([A-z0-9_]*))/gim,
+                                '<a href="https://twitter.com/$3" target="_blank">$1</a>')
+                        .replace(/(\B(#)([A-z0-9_]*))/gim,
+                                '<a href="https://twitter.com/search?q=%23$3&src=hash" target="_blank">$1</a>')
+        }
+
+    </script>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/app.css"/>
+</head>
+
+<body/>
+</html>
